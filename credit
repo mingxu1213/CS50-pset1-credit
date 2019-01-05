@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <cs50.h>
+
+int Odd(long long int);  //Function to check if odd card numbers are valid.
+int Even(long long int); //Function to check if even card numbers are valid.
+int (* Ptr)(long long int); //Function pointer;
+
+int main(void)
+{
+    long long int num, tmp;
+    int size, flag = 0;
+    num = get_long_long("Number: "); //get the user input
+    tmp = num;
+    while(tmp > 100) //get the first and second numbers.
+    {
+        tmp = tmp / 100;
+    }
+    if((tmp % 100) > 9) // check if the card number is odd or even
+    {
+        Ptr = &Even;
+        size = Ptr(num);
+        if(size != 0)
+        {
+            flag = 1;
+        }
+    }
+    else
+    {
+        Ptr = &Odd;
+        size = Ptr(num);
+        if(size != 0)
+        {
+            flag = 1;
+        }
+    }
+    if(size == 15)
+    {
+        if(flag)
+        {
+            if(num / (10000000000000) == 34 || num / (10000000000000) == 37)
+            {
+                printf("AMEX\n");
+            }
+            else
+            {
+                printf("INVALID\n");
+            }
+        }
+    }
+    else if(size == 16)
+    {
+        if(flag)
+        {
+            if(50 < (num / 100000000000000) && (56 > (num / 100000000000000)))
+            {
+                printf("MASTERCARD\n");
+            }
+            else if ((num /1000000000000000) == 4)
+            {
+                printf("VISA\n");
+            }
+            else
+            {
+                printf("INVALID\n");
+            }
+        }
+    }
+    else if (size == 13)
+    {
+        if(flag)
+        {
+            if ((num /1000000000000) == 4)
+            {
+                printf("VISA\n");
+            }
+            else
+            {
+                printf("INVALID\n");
+            }
+        }
+    }
+    else
+    {
+        printf("INVALID\n");
+    }
+}
+//Function to check if odd card number is valid , if valid return how many digits number, else return -1.
+int Odd(long long int example)
+{
+    int temp1, temp2, sum1 = 0, sum2 = 0, result = 0, count = 1;
+    while(example > 9)
+    {
+        temp1 = example % 10;
+        if(count % 2 != 0)
+        {
+            sum2 += temp1;
+        }
+        else
+        {
+            temp2 = 2 * temp1;
+            if (temp2 > 9)
+            {
+                sum1 = sum1 + (temp2 / 10) + (temp2 % 10);
+            }
+            else
+            {
+                sum1 += temp2;
+            }
+        }
+        count ++;
+        example = example / 10;
+    }
+    result = sum1 + sum2 + example;
+    if(result % 10 != 0)
+    {
+        count = 0;
+    }
+    return count;
+}
+//Function to check if even card number is valid , if valid return how many digits number, else return -1.
+int Even(long long int example)
+{
+    int temp1, temp2, sum1 = 0, sum2 = 0, result = 0, count = 0;
+    while(example > 0)
+    {
+        temp1 = example % 10;
+        if(count % 2 == 0)
+        {
+            sum2 += temp1;
+        }
+        else
+        {
+            temp2 = 2 * temp1;
+            if (temp2 > 9)
+            {
+                sum1 = sum1 + (temp2 / 10) + (temp2 % 10);
+            }
+            else
+            {
+                sum1 += temp2;
+            }
+        }
+        count ++;
+        example = example / 10;
+    }
+    result = sum1 + sum2 + example;;
+    if(result % 10 != 0)
+    {
+        count = 0;
+    }
+    return count;
+}
